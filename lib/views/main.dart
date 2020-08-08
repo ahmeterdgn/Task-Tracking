@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -7,11 +6,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  void initState() {
-    super.initState();
-    configOneSignal();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,8 +55,4 @@ class _MainPageState extends State<MainPage> {
           ],
         ));
   }
-}
-
-void configOneSignal() {
-  OneSignal.shared.init('f2a81911-f70c-404d-be49-8631e6e53378');
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:xtech/views/main.dart';
 import 'views/login.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 Future<void> main() async {
   runApp(MyApp());
@@ -13,9 +14,16 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // ignore: must_call_super
+  Future<void> configOneSignal() async {
+    OneSignal.shared.init('ec0f816f-359d-43bf-8449-af98f20d7258');
+    var status = await OneSignal.shared.getPermissionSubscriptionState();
+
+    var playerId = status.subscriptionStatus.userId;
+  }
+
   void initState() {
-    // all();
+    super.initState();
+    configOneSignal();
   }
 
   @override
