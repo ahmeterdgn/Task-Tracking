@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:xtech/Animation/FadeAnimation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:xtech/views/main.dart';
+import 'package:xtech/views/home.dart';
 import 'package:xtech/widget/alert.dart';
 
 class LoginPage extends StatefulWidget {

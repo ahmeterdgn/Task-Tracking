@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:xtech/views/main.dart';
+import 'package:xtech/views/home.dart';
 import 'views/login.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 Future<void> main() async {
@@ -21,31 +20,15 @@ class _MyAppState extends State<MyApp> {
     var playerId = status.subscriptionStatus.userId;
   }
 
-  void initState() {
-    super.initState();
-    configOneSignal();
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       // debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => LoginPage(),
-        '/main': (context) => MainPage(),
+        '/': (context) => MainPage(),
+        '/login': (context) => LoginPage(),
       },
     );
   }
-
-  // all() async {
-  //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  //   final logintrue = sharedPreferences.getString('login');
-  //   if (logintrue == 'ok') {
-  //     Navigator.push(
-  //       context,
-  //       new MaterialPageRoute(builder: (context) => new MainPage()),
-  //     );
-  //   }
-  // }
 }
