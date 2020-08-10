@@ -20,8 +20,8 @@ class _MyAppState extends State<MyApp> {
       // debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => MainPage(),
-        '/login': (context) => LoginPage(),
+        '/': (context) => NotificationPage(),
+        '/login': (context) => MainPage(),
         '/jobs': (context) => JopsPage(),
         '/notification': (context) => NotificationPage(),
       },

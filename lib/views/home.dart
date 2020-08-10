@@ -77,7 +77,7 @@ class _MainPageState extends State<MainPage> {
                             padding: EdgeInsets.all(25),
                             alignment: Alignment.center,
                             child: Text(
-                              'TASK TRACKİNG',
+                              'MY JOBS',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18),
                             ),

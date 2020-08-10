@@ -34,7 +34,7 @@ class _JopsPageState extends State<JopsPage> {
     return (check)
         ? Scaffold(
             appBar: AppBar(
-              title: Text('WELCOME'),
+              title: Text('My jobs'),
             ),
             body: ListView(
               children: <Widget>[
