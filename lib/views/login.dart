@@ -171,13 +171,6 @@ class _LoginPageState extends State<LoginPage> {
                                     child: TextFormField(
                                       controller: passwordcontroller,
                                       obscureText: true,
-                                      validator: (val) {
-                                        if (val.length < 2) {
-                                          return 'Minimum required 6 or more.';
-                                        } else {
-                                          return null;
-                                        }
-                                      },
                                       decoration: InputDecoration(
                                           border: InputBorder.none,
                                           hintText: "Password",

@@ -40,49 +40,53 @@ class _MainPageState extends State<MainPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Card(
-                    child: InkWell(
-                      splashColor: Colors.blue.withAlpha(30),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/notification');
-                      },
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Image.asset('assets/images/notification.png'),
-                          Container(
-                            padding: EdgeInsets.all(25),
-                            alignment: Alignment.center,
-                            child: Text(
-                              'NOTİFİCATİON',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
+                  Expanded(
+                    child: Card(
+                      child: InkWell(
+                        splashColor: Colors.blue.withAlpha(30),
+                        onTap: () {
+                          Navigator.pushNamed(context, '/notification');
+                        },
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.asset('assets/images/notification.png'),
+                            Container(
+                              padding: EdgeInsets.all(25),
+                              alignment: Alignment.center,
+                              child: Text(
+                                'NOTİFİCATİON',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                  Card(
-                    child: InkWell(
-                      splashColor: Colors.blue.withAlpha(30),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/jobs');
-                      },
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Image.asset('assets/images/engineer.png'),
-                          Container(
-                            padding: EdgeInsets.all(25),
-                            alignment: Alignment.center,
-                            child: Text(
-                              'MY JOBS',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
+                  Expanded(
+                    child: Card(
+                      child: InkWell(
+                        splashColor: Colors.blue.withAlpha(30),
+                        onTap: () {
+                          Navigator.pushNamed(context, '/jobs');
+                        },
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.asset('assets/images/engineer.png'),
+                            Container(
+                              padding: EdgeInsets.all(25),
+                              alignment: Alignment.center,
+                              child: Text(
+                                'MY JOBS',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),

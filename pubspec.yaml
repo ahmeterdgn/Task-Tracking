@@ -36,7 +36,8 @@ dev_dependencies:
   shared_preferences: ^0.5.8
   onesignal_flutter: ^2.6.0
   intl: ^0.16.1
-  
+  slide_popup_dialog: ^0.0.2
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

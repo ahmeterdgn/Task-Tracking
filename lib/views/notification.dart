@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
 class NotificationPage extends StatefulWidget {
   @override
@@ -40,8 +40,11 @@ class _NotificationPageState extends State<NotificationPage> {
 
       for (var i = 0; i < jsonData.length; i++) {
         setState(() {
-          notifi.add(
-              {'title': jsonData[i]['title'], 'date': jsonData[i]['date']});
+          notifi.add({
+            'title': jsonData[i]['title'],
+            'date': jsonData[i]['date'],
+            'message': jsonData[i]['message']
+          });
           nid = jsonData[i]['nid'];
         });
       }
@@ -64,17 +67,36 @@ class _NotificationPageState extends State<NotificationPage> {
           return Container(
             child: notifi[index] != null
                 ? Card(
-                    child: ListTile(
-                      leading: Image.asset('assets/images/notification.png'),
-                      title: Text(notifi[index]['title']),
-                      subtitle: Text(notifi[index]['date']),
-                      trailing: Icon(Icons.remove_red_eye),
+                    child: FlatButton(
+                      padding: EdgeInsets.all(0),
+                      onPressed: () {
+                        _showDialog(notifi[index]['message']);
+                      },
+                      child: ListTile(
+                          leading:
+                              Image.asset('assets/images/notification.png'),
+                          title: Text(notifi[index]['title']),
+                          subtitle: Text(notifi[index]['date']),
+                          trailing: IconButton(
+                            icon: Icon(Icons.remove_red_eye),
+                            onPressed: () {
+                              _showDialog(notifi[index]['message']);
+                            },
+                          )),
                     ),
                   )
                 : Text('asdasd'),
           );
         },
       ),
+    );
+  }
+
+  _showDialog(text) {
+    slideDialog.showSlideDialog(
+      context: context,
+      pillColor: Colors.red,
+      child: Text(text),
     );
   }
 }
