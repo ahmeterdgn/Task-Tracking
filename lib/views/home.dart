@@ -34,50 +34,60 @@ class _MainPageState extends State<MainPage> {
     return (check)
         ? Scaffold(
             appBar: AppBar(
-              title: Text('WELCOME'),
+              title: Text('XTECH'),
             ),
-            body: ListView(
-              children: <Widget>[
-                Card(
-                  child: ListTile(
-                    title: Text('Two-line ListTile'),
-                    subtitle: Text('Here is a second line'),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Icon(
-                          Icons.pause,
-                          color: Colors.orange,
-                        ),
-                        Icon(
-                          Icons.stop,
-                          color: Colors.red,
-                        )
-                      ],
+            body: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Card(
+                    child: InkWell(
+                      splashColor: Colors.blue.withAlpha(30),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/notification');
+                      },
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset('assets/images/notification.png'),
+                          Container(
+                            padding: EdgeInsets.all(25),
+                            alignment: Alignment.center,
+                            child: Text(
+                              'NOTİFİCATİON',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Card(
-                  child: ListTile(
-                    title: Text('Two-line ListTile'),
-                    subtitle: Text('Here is a second line'),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Icon(
-                          Icons.play_arrow,
-                          color: Colors.green,
-                        ),
-                        Icon(
-                          Icons.stop,
-                          color: Colors.red,
-                        )
-                      ],
+                  Card(
+                    child: InkWell(
+                      splashColor: Colors.blue.withAlpha(30),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/jobs');
+                      },
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset('assets/images/engineer.png'),
+                          Container(
+                            padding: EdgeInsets.all(25),
+                            alignment: Alignment.center,
+                            child: Text(
+                              'TASK TRACKİNG',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                FlatButton(onPressed: () => {}, child: null)
-              ],
+                ],
+              ),
             ))
         : Scaffold(
             backgroundColor: Colors.white,

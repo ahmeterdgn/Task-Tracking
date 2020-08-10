@@ -9,6 +9,8 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="xtech"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.onesignal.NotificationAccentColor.DEFAULT" android:value="0E47C200" />
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

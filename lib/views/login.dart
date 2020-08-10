@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xtech/views/home.dart';
 import 'package:xtech/widget/alert.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,11 +13,17 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  singIN(String email, String password) async {
-    Map data = {'mail': email.trim(), 'pass': password};
+  singIN(String email, String password, String playerId) async {
+    Map data = {
+      'mail': email.trim(),
+      'pass': password,
+      'one_signal_id': playerId,
+      'token': '56sdf6s56dfs66sdfvSGDF66sdfsy',
+      'action': 'login'
+    };
     var jsonData;
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var response = await http.post('http://xtech-ks.info/mobapi', body: data);
+    var response = await http.post('http://xtech-ks.info/mapi', body: data);
     if (response.statusCode == 200) {
       jsonData = json.decode(response.body);
       print(jsonData['result']);
@@ -187,8 +194,19 @@ class _LoginPageState extends State<LoginPage> {
                         FlatButton(
                           onPressed: () {
                             if (fromKey.currentState.validate()) {
-                              singIN(emailcontroller.text,
-                                  passwordcontroller.text);
+                              Future<void> configOneSignal() async {
+                                OneSignal.shared.init(
+                                    'ec0f816f-359d-43bf-8449-af98f20d7258');
+                                var status = await OneSignal.shared
+                                    .getPermissionSubscriptionState();
+                                String playerId =
+                                    status.subscriptionStatus.userId;
+
+                                singIN(emailcontroller.text,
+                                    passwordcontroller.text, playerId);
+                              }
+
+                              configOneSignal();
                             } else {
                               print('no');
                             }
