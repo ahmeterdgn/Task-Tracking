@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:xtech/views/detail.dart';
 import 'package:xtech/views/home.dart';
 import 'package:xtech/views/jobs.dart';
 import 'package:xtech/views/notification.dart';
+import 'package:xtech/views/test.dart';
 import 'views/login.dart';
 
 Future<void> main() async {
@@ -24,9 +26,11 @@ class _MyAppState extends State<MyApp> {
       // debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => MainPage(),
+        '/': (context) => TestPage(),
+        '/home': (context) => MainPage(),
         '/login': (context) => LoginPage(),
         '/jobs': (context) => JopsPage(),
+        '/detail': (context) => DetailPage(),
         '/notification': (context) => NotificationPage(),
       },
     );

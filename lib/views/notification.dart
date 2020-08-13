@@ -12,6 +12,7 @@ class _NotificationPageState extends State<NotificationPage> {
   List<Map> notifi = new List();
   ScrollController _scrollController = new ScrollController();
   var nid = '';
+  var isLoading = true;
   @override
   void dispose() {
     _scrollController.dispose();
@@ -46,6 +47,7 @@ class _NotificationPageState extends State<NotificationPage> {
             'message': jsonData[i]['message']
           });
           nid = jsonData[i]['nid'];
+          isLoading = false;
         });
       }
       print(nid);
@@ -57,46 +59,65 @@ class _NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Notifications'),
-      ),
-      body: ListView.builder(
-        controller: _scrollController,
-        itemCount: notifi.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            child: notifi[index] != null
-                ? Card(
-                    child: FlatButton(
-                      padding: EdgeInsets.all(0),
-                      onPressed: () {
-                        _showDialog(notifi[index]['message']);
-                      },
-                      child: ListTile(
-                          leading:
-                              Image.asset('assets/images/notification.png'),
-                          title: Text(notifi[index]['title']),
-                          subtitle: Text(notifi[index]['date']),
-                          trailing: IconButton(
-                            icon: Icon(Icons.remove_red_eye),
-                            onPressed: () {
-                              _showDialog(notifi[index]['message']);
-                            },
-                          )),
-                    ),
-                  )
-                : Text('asdasd'),
-          );
-        },
-      ),
-    );
+        appBar: AppBar(
+          title: Text('Notifications'),
+        ),
+        body: ListView.builder(
+          controller: _scrollController,
+          itemCount: notifi.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              child: notifi[index] != null
+                  ? Card(
+                      child: FlatButton(
+                        padding: EdgeInsets.all(0),
+                        onPressed: () {
+                          _showDialog(
+                            title: notifi[index]['title'],
+                            message: notifi[index]['message'],
+                          );
+                        },
+                        child: ListTile(
+                            leading:
+                                Image.asset('assets/images/notification.png'),
+                            title: Text(notifi[index]['title']),
+                            subtitle: Text(notifi[index]['date']),
+                            trailing: IconButton(
+                              icon: Icon(Icons.remove_red_eye),
+                              onPressed: () {
+                                _showDialog(
+                                  title: notifi[index]['title'],
+                                  message: notifi[index]['message'],
+                                );
+                              },
+                            )),
+                      ),
+                    )
+                  : Text('asdasd'),
+            );
+          },
+        ));
   }
 
-  _showDialog(text) {
+  _showDialog({message, title}) {
     slideDialog.showSlideDialog(
       context: context,
       pillColor: Colors.red,
-      child: Text(text),
+      child: Column(
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Text(message),
+        ],
+      ),
     );
   }
 }
