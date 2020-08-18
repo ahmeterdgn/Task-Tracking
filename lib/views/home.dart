@@ -16,10 +16,11 @@ class _MainPageState extends State<MainPage> {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => LoginPage()),
           (Route<dynamic> route) => false);
+    } else {
+      setState(() {
+        check = true;
+      });
     }
-    setState(() {
-      check = true;
-    });
   }
 
   var check = false;
@@ -95,7 +96,9 @@ class _MainPageState extends State<MainPage> {
             ))
         : Scaffold(
             backgroundColor: Colors.white,
-            body: Container(),
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
           );
   }
 }

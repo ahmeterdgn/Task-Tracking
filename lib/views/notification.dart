@@ -103,6 +103,7 @@ class _NotificationPageState extends State<NotificationPage> {
     slideDialog.showSlideDialog(
       context: context,
       pillColor: Colors.red,
+      barrierColor: Colors.white.withOpacity(0.7),
       child: Column(
         children: [
           Text(

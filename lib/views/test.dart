@@ -11,11 +11,12 @@ class TestPage extends StatefulWidget {
 class _TestPageState extends State<TestPage> {
   List<Map> jobs = new List();
   ScrollController _scrollController = new ScrollController();
-  var nid = '';
+  var tid = '';
   var isLoading = true;
-  var isAcitve = true;
-  var isFinished = true;
-  var isNoStarted = true;
+  bool isAcitve = true;
+  bool isFinished = true;
+  bool isNoStarted = true;
+
   @override
   void dispose() {
     _scrollController.dispose();
@@ -37,7 +38,7 @@ class _TestPageState extends State<TestPage> {
   var jsonData;
   fetch() async {
     var response = await http.get(
-        'http://xtech-ks.info/mapi?token=56sdf6s56dfs66sdfvSGDF66sdfsy&action=tasks&uid=14&total=5&before=$nid');
+        'http://xtech-ks.info/mapi?token=56sdf6s56dfs66sdfvSGDF66sdfsy&action=tasks&uid=14&total=7&before=$tid&not_started=${isNoStarted == true ? 1 : 0}&active=${isAcitve == true ? 1 : 0}&finished=${isFinished == true ? 1 : 0}');
 
     if (response.statusCode == 200) {
       jsonData = json.decode(response.body);
@@ -49,11 +50,11 @@ class _TestPageState extends State<TestPage> {
             'parents': jsonData[i]['parents'],
             'status': jsonData[i]['status']
           });
-          nid = jsonData[i]['nid'];
+          tid = jsonData[i]['tid'].toString();
           isLoading = false;
         });
       }
-      print(nid);
+      print(tid);
     } else {
       throw Exception('hata');
     }
@@ -62,47 +63,47 @@ class _TestPageState extends State<TestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('TEST'),
-      ),
-      body: ListView.builder(
-        controller: _scrollController,
-        itemCount: jobs.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            child: jobs[index] != null
-                ? Card(
-                    child: ListTile(
-                        title: Text(jobs[index]['title']),
-                        subtitle: Text(jobs[index]['parents']),
-                        trailing: jobs[index]['status'] != "finished"
-                            ? Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                    jobs[index]['status'] == "active"
-                                        ? Row(
-                                            children: [
-                                              Icon(
-                                                Icons.pause,
-                                                color: Colors.orange,
-                                              ),
-                                              Icon(
-                                                Icons.stop,
-                                                color: Colors.red,
-                                              )
-                                            ],
-                                          )
-                                        : Icon(
-                                            Icons.play_arrow,
-                                            color: Colors.green,
-                                          )
-                                  ])
-                            : Text('')),
-                  )
-                : Text('asdasd'),
-          );
-        },
-      ),
+      appBar: AppBar(title: Text('data')),
+      body: isLoading
+          ? Text('asdasd')
+          : ListView.builder(
+              controller: _scrollController,
+              itemCount: jobs.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  child: jobs[index] != null
+                      ? Card(
+                          child: ListTile(
+                              title: Text(jobs[index]['title']),
+                              subtitle: Text(jobs[index]['parents']),
+                              trailing: jobs[index]['status'] != "finished"
+                                  ? Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                          jobs[index]['status'] == "active"
+                                              ? Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.pause,
+                                                      color: Colors.orange,
+                                                    ),
+                                                    Icon(
+                                                      Icons.stop,
+                                                      color: Colors.red,
+                                                    )
+                                                  ],
+                                                )
+                                              : Icon(
+                                                  Icons.play_arrow,
+                                                  color: Colors.green,
+                                                )
+                                        ])
+                                  : Text('')),
+                        )
+                      : Text('asdasd'),
+                );
+              },
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _showDialog();
@@ -115,6 +116,7 @@ class _TestPageState extends State<TestPage> {
 
   _showDialog() {
     slideDialog.showSlideDialog(
+        barrierColor: Colors.white.withOpacity(0.7),
         context: context,
         pillColor: Colors.red,
         child: StatefulBuilder(
@@ -123,28 +125,32 @@ class _TestPageState extends State<TestPage> {
             children: [
               CheckboxListTile(
                 value: isAcitve,
-                title: Text("ACTİVE"),
+                title: Text("Active"),
                 onChanged: (val) {
                   setState(() {
                     isAcitve = val;
+                    fetch();
                   });
                 },
               ),
               CheckboxListTile(
                 value: isFinished,
-                title: Text("BİTENLER"),
+                title: Text("Finished"),
                 onChanged: (val) {
                   setState(() {
                     isFinished = val;
+                    fetch();
                   });
                 },
               ),
               CheckboxListTile(
                 value: isNoStarted,
-                title: Text("BAŞALAMAYANLAR"),
+                title: Text("Not Started"),
                 onChanged: (val) {
                   setState(() {
                     isNoStarted = val;
+
+                    fetch();
                   });
                 },
               ),
@@ -153,7 +159,15 @@ class _TestPageState extends State<TestPage> {
                 children: [
                   FlatButton(
                     child: Icon(Icons.check),
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        jobs.clear();
+                        tid = '';
+                        fetch();
+
+                        Navigator.pop(context);
+                      });
+                    },
                   ),
                 ],
               )
