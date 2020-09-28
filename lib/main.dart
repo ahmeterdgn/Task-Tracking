@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:xtech/screens/home.dart';
 import 'package:xtech/screens/login.dart';
+import 'package:xtech/screens/notification.dart';
+import 'package:xtech/screens/task.dart';
 
 main() {
   runApp(MyApp());
@@ -17,6 +19,9 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       routes: {
         '/': (context) => LoginPage(),
+        '/home': (context) => HomePage(),
+        '/notification': (context) => NotificationPage(),
+        '/task': (context) => TaskPage(),
       },
     );
   }

@@ -19,6 +19,17 @@ class RoundedButton extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       width: size.width * 0.8,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(100),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: secondColor,
+              blurRadius: 3.0,
+              spreadRadius: 2.0,
+            ),
+          ]),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(29),
         child: FlatButton(

@@ -20,40 +20,11 @@ class BacgorundComponents extends StatelessWidget {
             left: 0,
             child: ClipRRect(
               borderRadius: BorderRadius.only(
-                bottomRight: const Radius.circular(100),
-                bottomLeft: const Radius.circular(5),
+                bottomLeft: const Radius.circular(100),
               ),
               child: Image.asset(
                 'assets/images/login_top.jpg',
                 width: size.width * 1,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            child: ClipRRect(
-              borderRadius: BorderRadius.only(
-                topRight: const Radius.circular(100),
-              ),
-              child: Image.asset(
-                'assets/images/login_top.jpg',
-                width: size.width * 0.3,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            child: ClipRRect(
-              borderRadius: BorderRadius.only(
-                topLeft: const Radius.circular(100),
-              ),
-              child: Image.asset(
-                'assets/images/login_top.jpg',
-                width: size.width * 0.3,
                 fit: BoxFit.cover,
               ),
             ),
