@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var logintrue = sharedPreferences.getString('login');
     print(logintrue);
-    if (logintrue != 'ok') {
+    if (logintrue == 'ok') {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => HomePage()),
           (Route<dynamic> route) => false);

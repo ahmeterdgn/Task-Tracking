@@ -4,7 +4,6 @@ import 'package:xtech/constants/global.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 class TaskPage extends StatefulWidget {
   @override
@@ -131,6 +130,7 @@ class _TaskPageState extends State<TaskPage> {
             title: task[index]['title'],
             index: index,
             status: task[index]['status'],
+            tid: task[index]['tid'],
           );
         },
       );
