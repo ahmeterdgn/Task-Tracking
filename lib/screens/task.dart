@@ -56,9 +56,9 @@ class _TaskPageState extends State<TaskPage> {
       'uid': '14',
       'total': '20',
       'before': tid,
-      'not_started': isNoStarted ? 1 : 0,
-      'active': isAcitve ? 1 : 0,
-      'finished': isFinished ? 1 : 0,
+      'not_started': isNoStarted ? "1" : "0",
+      'active': isAcitve ? "1" : "0",
+      'finished': isFinished ? "1" : "0",
     };
     var response = await http.post(
       globalUrl,
@@ -90,29 +90,46 @@ class _TaskPageState extends State<TaskPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('TASK TRACKING'),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: <Color>[
-                secondColor,
-                mainColor,
-              ],
+        appBar: AppBar(
+          title: Text('TASK TRACKING'),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: <Color>[
+                  secondColor,
+                  mainColor,
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      body: !isLoading
-          ? body
-          : Center(
-              child: CircularProgressIndicator(),
+        body: !isLoading
+            ? body
+            : Center(
+                child: CircularProgressIndicator(),
+              ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => _showDialog(),
+          child: Container(
+            height: 60,
+            width: 60,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle, // circular shape
+              gradient: LinearGradient(
+                colors: [
+                  mainColor,
+                  secondColor,
+                ],
+              ),
             ),
-      floatingActionButton:
-          FloatingActionButton(onPressed: () => _showDialog()),
-    );
+            child: Icon(
+              Icons.filter_list,
+              color: Colors.white,
+            ),
+          ),
+        ));
   }
 
   Widget get body => ListView.builder(
@@ -122,7 +139,6 @@ class _TaskPageState extends State<TaskPage> {
             onTap: (status) {
               setState(() {
                 task[index]['status'] = status;
-                print(status);
               });
             },
             subtitle: task[index]['parents'],

@@ -29,7 +29,6 @@ class _NotificationPageState extends State<NotificationPage> {
       body: data,
     );
     if (response.statusCode == 200) {
-      print(response.body);
       jsonData = json.decode(response.body);
       for (var i = 0; i < jsonData.length; i++) {
         setState(() {
@@ -42,7 +41,6 @@ class _NotificationPageState extends State<NotificationPage> {
           isLoading = false;
         });
       }
-      print(nid);
     } else {
       throw Exception('hata');
     }

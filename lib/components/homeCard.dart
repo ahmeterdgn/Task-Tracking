@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xtech/constants/global.dart';
 
 class HomeComponent extends StatelessWidget {
   const HomeComponent({
@@ -20,9 +21,19 @@ class HomeComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: new BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(8)),
+        gradient: new LinearGradient(
+          colors: color == Colors.green
+              ? [Colors.greenAccent, Colors.lightGreen]
+              : [mainColor, secondColor],
+          begin: FractionalOffset.centerLeft,
+          end: FractionalOffset.centerRight,
+        ),
+      ),
       padding: EdgeInsets.all(4),
+      margin: EdgeInsets.all(4),
       child: FlatButton(
-        color: color,
         onPressed: onPressed,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

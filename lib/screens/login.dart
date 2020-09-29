@@ -35,7 +35,6 @@ class _LoginPageState extends State<LoginPage> {
     var response = await http.post(globalUrl, body: data);
     if (response.statusCode == 200) {
       jsonData = json.decode(response.body);
-      print(jsonData['result']);
       if (jsonData['result'] == "success") {
         setState(() {
           sharedPreferences.setString('result', jsonData['result']);
@@ -59,7 +58,6 @@ class _LoginPageState extends State<LoginPage> {
   checklogin() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var logintrue = sharedPreferences.getString('login');
-    print(logintrue);
     if (logintrue == 'ok') {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => HomePage()),
@@ -133,9 +131,7 @@ class _LoginPageState extends State<LoginPage> {
 
                               configOneSignal();
                             });
-                          } else {
-                            print(passwordcontroller);
-                          }
+                          } else {}
                         },
                       ),
                     ],
