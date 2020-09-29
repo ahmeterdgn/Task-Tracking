@@ -3,14 +3,18 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:xtech/constants/global.dart';
+import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/style.dart';
 
 class TaskWidget extends StatefulWidget {
   final String title;
   final String subtitle;
   final Function onTap;
   final index;
-  final status;
+  final String status;
   final tid;
+  final String description;
   const TaskWidget({
     Key key,
     this.title,
@@ -19,6 +23,7 @@ class TaskWidget extends StatefulWidget {
     this.index,
     this.status,
     this.tid,
+    this.description,
   }) : super(key: key);
 
   @override
@@ -42,76 +47,17 @@ class TaskWidget extends StatefulWidget {
 
 class _TaskWidgetState extends State<TaskWidget> {
   var isLoading = true;
-
   @override
   Widget build(BuildContext context) {
     return isLoading
         ? Slidable(
             actionPane: TaskWidget._getActionPane(widget.index),
-            secondaryActions: widget.status == "active"
-                ? [
-                    IconSlideAction(
-                      caption: 'Pause',
-                      color: Colors.orange,
-                      icon: Icons.pause,
-                      onTap: () => _showSnackBar(
-                        context,
-                        'Pause',
-                        'pause',
-                        widget.tid.toString(),
-                      ),
-                    ),
-                    IconSlideAction(
-                      caption: 'Stop',
-                      color: Colors.red,
-                      icon: Icons.stop,
-                      onTap: () => _showSnackBar(
-                        context,
-                        'Stop',
-                        'stop',
-                        widget.tid.toString(),
-                      ),
-                    ),
-                  ]
-                : widget.status == "paused"
-                    ? [
-                        IconSlideAction(
-                          caption: 'Start',
-                          color: Colors.green,
-                          icon: Icons.play_arrow,
-                          onTap: () => _showSnackBar(
-                            context,
-                            'Start',
-                            'start',
-                            widget.tid.toString(),
-                          ),
-                        ),
-                        IconSlideAction(
-                          caption: 'Stop',
-                          color: Colors.red,
-                          icon: Icons.stop,
-                          onTap: () => _showSnackBar(
-                            context,
-                            'Stop',
-                            'stop',
-                            widget.tid.toString(),
-                          ),
-                        ),
-                      ]
+            secondaryActions: widget.status == "paused"
+                ? paused(context)
+                : widget.status == "active"
+                    ? active(context)
                     : widget.status == "not_started"
-                        ? [
-                            IconSlideAction(
-                              caption: 'Start',
-                              color: Colors.green,
-                              icon: Icons.play_arrow,
-                              onTap: () => _showSnackBar(
-                                context,
-                                'Start',
-                                'start',
-                                widget.tid.toString(),
-                              ),
-                            ),
-                          ]
+                        ? not_started(context)
                         : [],
             child: Card(
               shape: Border(
@@ -127,7 +73,10 @@ class _TaskWidgetState extends State<TaskWidget> {
                 ),
               ),
               child: FlatButton(
-                onPressed: () {},
+                onPressed: () {
+                  _detaylibilgiler(
+                      title: widget.title, content: widget.description);
+                },
                 child: ListTile(
                   title: Text(widget.title),
                   subtitle: Text(widget.subtitle),
@@ -142,7 +91,83 @@ class _TaskWidgetState extends State<TaskWidget> {
         : Center(child: CircularProgressIndicator());
   }
 
-  changeStatus({String tids, String opr}) async {
+  List<Widget> active(BuildContext context) {
+    return [
+      IconSlideAction(
+        caption: 'Pause',
+        color: Colors.orange,
+        icon: Icons.pause,
+        onTap: () => _showSnackBar(
+          context,
+          'Pause',
+          'pause',
+          widget.tid.toString(),
+          'paused',
+        ),
+      ),
+      IconSlideAction(
+        caption: 'Stop',
+        color: Colors.red,
+        icon: Icons.stop,
+        onTap: () => _showSnackBar(
+          context,
+          'Stop',
+          'stop',
+          widget.tid.toString(),
+          'finished',
+        ),
+      ),
+    ];
+  }
+
+  // ignore: non_constant_identifier_names
+  List<Widget> not_started(BuildContext context) {
+    return [
+      IconSlideAction(
+        caption: 'Start',
+        color: Colors.green,
+        icon: Icons.play_arrow,
+        onTap: () => _showSnackBar(
+          context,
+          'Start',
+          'start',
+          widget.tid.toString(),
+          'active',
+        ),
+      ),
+    ];
+  }
+
+  List<Widget> paused(BuildContext context) {
+    return [
+      IconSlideAction(
+        caption: 'Start',
+        color: Colors.green,
+        icon: Icons.play_arrow,
+        onTap: () => _showSnackBar(
+          context,
+          'Start',
+          'start',
+          widget.tid.toString(),
+          'active',
+        ),
+      ),
+      IconSlideAction(
+        caption: 'Stop',
+        color: Colors.red,
+        icon: Icons.stop,
+        onTap: () => _showSnackBar(
+          context,
+          'Stop',
+          'stop',
+          widget.tid.toString(),
+          'finished',
+        ),
+      ),
+    ];
+  }
+
+  changeStatus({String tids, String opr, String statuschange}) async {
     Map data = {
       'tid': tids,
       'opr': opr,
@@ -159,13 +184,14 @@ class _TaskWidgetState extends State<TaskWidget> {
       if (jsonData['result'] == "success") {
         setState(() {
           isLoading = true;
+          widget.onTap(statuschange);
         });
       } else {}
     } else {}
   }
 
-  void _showSnackBar(
-      BuildContext context, String text, String opr, String tid) {
+  void _showSnackBar(BuildContext context, String text, String opr, String tid,
+      String statuschange) {
     Scaffold.of(context).showSnackBar(
       SnackBar(
         content: Text(text),
@@ -176,7 +202,43 @@ class _TaskWidgetState extends State<TaskWidget> {
       changeStatus(
         opr: opr,
         tids: tid,
+        statuschange: statuschange,
       );
     });
+  }
+
+  _detaylibilgiler({title, content}) {
+    slideDialog.showSlideDialog(
+      barrierColor: Colors.white.withOpacity(0.7),
+      context: context,
+      pillColor: Colors.red,
+      child: Expanded(
+        flex: 1,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
+                child: Html(
+                  data: "<section>$content</section>",
+                  style: {
+                    "section": Style(padding: EdgeInsets.all(15)),
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

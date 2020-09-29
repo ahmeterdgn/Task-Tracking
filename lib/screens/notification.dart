@@ -120,11 +120,11 @@ class _NotificationPageState extends State<NotificationPage> {
                             ),
                           ),
                         )
-                      : Text('asdasd'),
+                      : Text(''),
                 );
               },
             )
-          : Text('BOŞ'),
+          : Text(''),
     );
   }
 

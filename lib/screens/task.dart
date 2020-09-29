@@ -4,6 +4,7 @@ import 'package:xtech/constants/global.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
 class TaskPage extends StatefulWidget {
   @override
@@ -15,9 +16,9 @@ class _TaskPageState extends State<TaskPage> {
   ScrollController _scrollController = new ScrollController();
   var tid = '';
   var isLoading = true;
-  var isAcitve = "1";
-  var isFinished = "1";
-  var isNoStarted = "1";
+  var isAcitve = true;
+  var isFinished = true;
+  var isNoStarted = true;
 
   @override
   void dispose() {
@@ -40,9 +41,9 @@ class _TaskPageState extends State<TaskPage> {
   _filterChoses() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      isAcitve = (prefs.getString('isAcitve') ?? "1");
-      isFinished = (prefs.getString('isFinished') ?? "1");
-      isNoStarted = (prefs.getString('isNoStarted') ?? "1");
+      isAcitve = (prefs.getBool('isAcitve') ?? true);
+      isFinished = (prefs.getBool('isFinished') ?? true);
+      isNoStarted = (prefs.getBool('isNoStarted') ?? true);
       fetch();
     });
   }
@@ -55,9 +56,9 @@ class _TaskPageState extends State<TaskPage> {
       'uid': '14',
       'total': '20',
       'before': tid,
-      'not_started': isNoStarted,
-      'active': isAcitve,
-      'finished': isFinished,
+      'not_started': isNoStarted ? 1 : 0,
+      'active': isAcitve ? 1 : 0,
+      'finished': isFinished ? 1 : 0,
     };
     var response = await http.post(
       globalUrl,
@@ -109,21 +110,19 @@ class _TaskPageState extends State<TaskPage> {
           : Center(
               child: CircularProgressIndicator(),
             ),
+      floatingActionButton:
+          FloatingActionButton(onPressed: () => _showDialog()),
     );
-  }
-
-  secilenler(veri) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getBool(veri);
   }
 
   Widget get body => ListView.builder(
         itemCount: task.length,
         itemBuilder: (context, index) {
           return TaskWidget(
-            onTap: () {
+            onTap: (status) {
               setState(() {
-                print('a');
+                task[index]['status'] = status;
+                print(status);
               });
             },
             subtitle: task[index]['parents'],
@@ -131,7 +130,100 @@ class _TaskPageState extends State<TaskPage> {
             index: index,
             status: task[index]['status'],
             tid: task[index]['tid'],
+            description: task[index]['description'],
           );
         },
       );
+
+  _showDialog() {
+    slideDialog.showSlideDialog(
+      barrierColor: Colors.white.withOpacity(0.7),
+      context: context,
+      pillColor: Colors.red,
+      child: StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return Column(
+            children: [
+              CheckboxListTile(
+                value: isNoStarted,
+                activeColor: Colors.green,
+                title: Text(
+                  "Not Started",
+                  style: TextStyle(
+                    color: Colors.green,
+                  ),
+                ),
+                onChanged: (val) {
+                  setState(() {
+                    isNoStarted = val;
+                  });
+                },
+              ),
+              CheckboxListTile(
+                value: isAcitve,
+                activeColor: Colors.orange,
+                title: Text(
+                  "Active",
+                  style: TextStyle(
+                    color: Colors.orange,
+                  ),
+                ),
+                onChanged: (val) {
+                  setState(() {
+                    isAcitve = val;
+                  });
+                },
+              ),
+              CheckboxListTile(
+                value: isFinished,
+                activeColor: Colors.red,
+                title: Text(
+                  "Finished",
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+                onChanged: (val) {
+                  setState(() {
+                    isFinished = val;
+                  });
+                },
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FlatButton(
+                    child: Row(
+                      children: [
+                        Icon(Icons.check),
+                        Text('Filter'),
+                      ],
+                    ),
+                    onPressed: () {
+                      setState(() async {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        prefs.setBool('isNoStarted', isNoStarted);
+                        prefs.setBool('isAcitve', isAcitve);
+                        prefs.setBool('isFinished', isFinished);
+                        tid = '';
+                        task.clear();
+                        fetch();
+                        Navigator.pop(context);
+                      });
+                    },
+                  ),
+                ],
+              )
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  secilenler(veri) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getBool(veri);
+  }
 }
