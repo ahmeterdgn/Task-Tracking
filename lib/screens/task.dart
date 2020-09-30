@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xtech/components/offline.dart';
 import 'package:xtech/components/task.dart';
 import 'package:xtech/constants/global.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -90,46 +91,53 @@ class _TaskPageState extends State<TaskPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('TASK TRACKING'),
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: <Color>[
-                  secondColor,
-                  mainColor,
-                ],
-              ),
+      appBar: AppBar(
+        title: Text('TASK TRACKING'),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: <Color>[
+                secondColor,
+                mainColor,
+              ],
             ),
           ),
         ),
+      ),
+      floatingActionButton: buildFloatingActionButton(),
+      body: Offline(
         body: !isLoading
             ? body
             : Center(
                 child: CircularProgressIndicator(),
               ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => _showDialog(),
-          child: Container(
-            height: 60,
-            width: 60,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle, // circular shape
-              gradient: LinearGradient(
-                colors: [
-                  mainColor,
-                  secondColor,
-                ],
-              ),
-            ),
-            child: Icon(
-              Icons.filter_list,
-              color: Colors.white,
-            ),
+      ),
+    );
+  }
+
+  FloatingActionButton buildFloatingActionButton() {
+    return FloatingActionButton(
+      onPressed: () => _showDialog(),
+      child: Container(
+        height: 60,
+        width: 60,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle, // circular shape
+          gradient: LinearGradient(
+            colors: [
+              mainColor,
+              secondColor,
+            ],
           ),
-        ));
+        ),
+        child: Icon(
+          Icons.filter_list,
+          color: Colors.white,
+        ),
+      ),
+    );
   }
 
   Widget get body => ListView.builder(
