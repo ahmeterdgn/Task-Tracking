@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 import 'package:xtech/components/offline.dart';
 import 'package:xtech/constants/global.dart';
-import 'package:flutter_offline/flutter_offline.dart';
 
 class NotificationPage extends StatefulWidget {
   @override
