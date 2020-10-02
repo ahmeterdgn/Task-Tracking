@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:xtech/components/alert.dart';
 import 'package:xtech/constants/global.dart';
 import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 import 'package:flutter_html/flutter_html.dart';
@@ -88,7 +89,19 @@ class _TaskWidgetState extends State<TaskWidget> {
               ),
             ),
           )
-        : Center(child: CircularProgressIndicator());
+        : Padding(
+            padding: const EdgeInsets.all(3.0),
+            child: Card(
+              elevation: 4,
+              child: Center(
+                  child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.orange),
+                ),
+              )),
+            ),
+          );
   }
 
   List<Widget> active(BuildContext context) {
@@ -186,8 +199,18 @@ class _TaskWidgetState extends State<TaskWidget> {
           isLoading = true;
           widget.onTap(statuschange);
         });
-      } else {}
-    } else {}
+      } else if (jsonData['result'] == "error") {
+        setState(() {
+          isLoading = true;
+          showAlertDialog(context, title: 'Error!', text: jsonData['message']);
+        });
+      }
+    } else {
+      setState(() {
+        isLoading = true;
+        showAlertDialog(context, title: 'Error!', text: 'An error occurred');
+      });
+    }
   }
 
   void _showSnackBar(BuildContext context, String text, String opr, String tid,
