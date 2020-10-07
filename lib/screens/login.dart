@@ -37,7 +37,6 @@ class _LoginPageState extends State<LoginPage> {
       jsonData = json.decode(response.body);
       if (jsonData['result'] == "success") {
         setState(() {
-          sharedPreferences.setString('result', jsonData['result']);
           sharedPreferences.setString('login', 'ok');
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => HomePage()),
