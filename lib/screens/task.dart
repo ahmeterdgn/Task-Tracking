@@ -214,28 +214,48 @@ class _TaskPageState extends State<TaskPage> {
                 },
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  FlatButton(
-                    child: Row(
-                      children: [
-                        Icon(Icons.check),
-                        Text('Filter'),
-                      ],
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FlatButton(
+                      color: mainColor,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: mainColor,
+                          width: 1,
+                          style: BorderStyle.solid,
+                        ),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.check,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            'Filter',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                      onPressed: () {
+                        setState(() async {
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          prefs.setBool('isNoStarted', isNoStarted);
+                          prefs.setBool('isAcitve', isAcitve);
+                          prefs.setBool('isFinished', isFinished);
+                          tid = '';
+                          task.clear();
+                          fetch();
+                          Navigator.pop(context);
+                        });
+                      },
                     ),
-                    onPressed: () {
-                      setState(() async {
-                        SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                        prefs.setBool('isNoStarted', isNoStarted);
-                        prefs.setBool('isAcitve', isAcitve);
-                        prefs.setBool('isFinished', isFinished);
-                        tid = '';
-                        task.clear();
-                        fetch();
-                        Navigator.pop(context);
-                      });
-                    },
                   ),
                 ],
               )
