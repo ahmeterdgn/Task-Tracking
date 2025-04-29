@@ -32,7 +32,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  http: any
+  http: 13.0.3
   shared_preferences: ^0.5.12+2
   onesignal_flutter: ^2.6.0
   intl: ^0.16.1
